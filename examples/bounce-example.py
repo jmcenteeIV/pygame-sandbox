@@ -7,7 +7,7 @@ black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
 
-ball = pygame.image.load("images/ejike.png")
+ball = pygame.image.load("../images/ejike.png")
 ballrect = ball.get_rect()
 
 while 1:
