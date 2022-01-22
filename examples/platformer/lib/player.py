@@ -18,12 +18,20 @@ class Player(pygame.sprite.Sprite):
         self.pos = vec((10, 1025))
         self.vel = vec(0,0)
         self.acc = vec(0,0)
+        self.jumping = False
+
+    def cancel_jump(self):
+        if self.jumping:
+            if self.vel.y < -3:
+                self.vel.y = -3
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
-    def jump(self):
-        self.vel.y = -15
+    def jump(self, hits):
+        if hits and not self.jumping:
+           self.jumping = True
+           self.vel.y = -15
 
     def move(self):
         self.acc = vec(0,0.1)
@@ -45,23 +53,32 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = self.width
 
         #  Vertical movement
-        if pressed_keys[K_DOWN]:
-            self.acc.y = self.accuracy
-        if pressed_keys[K_UP]:
-            self.acc.y = -self.accuracy
+        # if pressed_keys[K_DOWN]:
+        #     self.acc.y = self.accuracy
+        # if pressed_keys[K_UP]:
+        #     self.acc.y = -self.accuracy
 
-        self.acc.y += self.vel.y * self.friction
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        # self.acc.y += self.vel.y * self.friction
+        # self.vel += self.acc
+        # self.pos += self.vel + 0.5 * self.acc
 
-        if self.pos.y > self.height:
-            self.pos.y, self.acc.y = self.height, 0
-        if self.pos.y < self.rect.height:
-            self.pos.y, self.acc.y = (0 + self.rect.height), 0
+        # if self.pos.y > self.height:
+        #     self.pos.y, self.acc.y = self.height, 0
+        # if self.pos.y < self.rect.height:
+        #     self.pos.y, self.acc.y = (0 + self.rect.height), 0
         
         self.rect.midbottom = self.pos
 
-    def resolve_collisions(self, hits):
-        if hits:
-            self.pos.y = hits[0].rect.top + 1
-            self.vel.y = 0
+    def update(self, hits):
+        if self.vel.y > 0:        
+            if hits:
+                if self.pos.y < hits[0].rect.bottom:               
+                    self.pos.y = hits[0].rect.top +1
+                    self.vel.y = 0
+                    self.jumping = False
+
+    # def update(self, hits):
+    #     if self.vel.y > 0:        
+    #         if hits:
+    #             self.vel.y = 0
+    #             self.pos.y = hits[0].rect.top + 1
