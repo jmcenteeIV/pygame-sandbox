@@ -8,7 +8,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "G:\\AJ\\Programming\\Python\\pygame-sandbox\\examples\\platformer\\platform_game.py",
+            "program": ".\\examples\\racer\\main.py",
             "console": "integratedTerminal"
         }
     ]
